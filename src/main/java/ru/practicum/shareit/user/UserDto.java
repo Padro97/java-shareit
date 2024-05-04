@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Value
 @Builder(toBuilder = true)
-public class User {
-
+public class UserDto {
     @Nullable
     Long id;
     @NotBlank String name;
