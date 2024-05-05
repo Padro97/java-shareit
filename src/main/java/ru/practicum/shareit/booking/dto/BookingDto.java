@@ -9,9 +9,6 @@ import ru.practicum.shareit.user.UserDto;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Builder
 @AllArgsConstructor
 public class BookingDto {
