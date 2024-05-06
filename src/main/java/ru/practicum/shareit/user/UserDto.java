@@ -1,18 +1,19 @@
 package ru.practicum.shareit.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.*;
 
-@Value
-@Builder(toBuilder = true)
+@Data
+@Builder
+@AllArgsConstructor
+@ToString
 public class UserDto {
-    @Nullable
-    Long id;
-    @NotBlank String name;
-    @Email @NotNull String email;
+    private Long id;
+    private String name;
+    @Email
+    private String email;
 }
+

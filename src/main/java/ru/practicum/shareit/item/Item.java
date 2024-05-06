@@ -1,26 +1,19 @@
 package ru.practicum.shareit.item;
 
-import lombok.Builder;
-import lombok.Value;
-import org.springframework.lang.Nullable;
+import lombok.*;
 import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.user.User;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-@Value
-@Builder(toBuilder = true)
+@ToString
+@Getter
+@Setter
+@Builder
 public class Item {
-
-    @Nullable
-    Long id;
-    @NotBlank
-    String name;
-    @NotBlank
-    String description;
-    @NotNull
-    Boolean available;
-    @Nullable
-    ItemRequest request;
-
+    private Long id;
+    private String name;
+    private String description;
+    private User owner;
+    private Boolean available;
+    private ItemRequest request;
 }
+

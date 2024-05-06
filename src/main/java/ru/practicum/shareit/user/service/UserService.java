@@ -1,20 +1,17 @@
 package ru.practicum.shareit.user.service;
 
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserDto;
 
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 public interface UserService {
+    UserDto add(UserDto user);
 
-    User addUser(User user);
+    UserDto update(UserDto userDto);
 
-    User updateUser(User user, @Positive Long id);
+    void remove(Long id);
 
-    void delete(Long id);
+    List<UserDto> getAll();
 
-    List<User> getUsers();
-
-    User getUserById(Long id);
-
+    UserDto getById(Long id);
 }
