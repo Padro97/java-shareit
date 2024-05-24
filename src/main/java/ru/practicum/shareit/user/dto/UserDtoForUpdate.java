@@ -1,19 +1,19 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-
-import javax.validation.constraints.Email;
 import lombok.*;
 
-@Data
+import javax.validation.constraints.Email;
+
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @ToString
-public class UserDto {
+public class UserDtoForUpdate {
     private Long id;
+
     private String name;
+
     @Email
     private String email;
 }
-
