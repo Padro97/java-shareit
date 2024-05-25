@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @ToString
 @Getter
 @Setter

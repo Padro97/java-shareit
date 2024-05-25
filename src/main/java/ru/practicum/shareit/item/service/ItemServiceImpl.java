@@ -23,9 +23,8 @@ import ru.practicum.shareit.user.service.UserService;
 import javax.transaction.Transactional;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -38,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
     private final BookingMapper bookingMapper = BookingMapper.INSTANCE;
     private final ItemMapper mapper = ItemMapper.INSTANCE;
     private final CommentMapper commentMapper = CommentMapper.INSTANCE;
+
 
     @Transactional
     @Override
@@ -72,7 +72,6 @@ public class ItemServiceImpl implements ItemService {
         return mapper.toDto(repository.save(existingItem));
     }
 
-
     @Override
     public ItemBookingDto getById(Long itemId, Long userId) {
         Item item = repository.findById(itemId)
@@ -90,54 +89,54 @@ public class ItemServiceImpl implements ItemService {
         }
 
         List<CommentDto> comments = commentMapper.toDtoList(commentRepository.findAllByItem_Id(itemId));
-
-        for (CommentDto comment : comments) {
-            comment.setAuthorName(comment.getAuthor().getName());
-        }
-
-        if (comments.isEmpty()) {
-            result.setComments(new ArrayList<>());
-        } else {
-            result.setComments(comments);
-        }
+        comments.forEach(comment -> comment.setAuthorName(comment.getAuthor().getName()));
+        result.setComments(comments.isEmpty() ? new ArrayList<>() : comments);
 
         return result;
     }
 
-
     @Override
-    public List<ItemBookingDto> getAllByOwner(Long id) {
-        List<Item> items = repository.findAllByOwnerIdOrderByIdAsc(id);
+    public List<ItemBookingDto> getAllByOwner(Long ownerId) {
+        List<Item> items = repository.findAllByOwnerIdOrderByIdAsc(ownerId);
         LocalDateTime now = LocalDateTime.now();
+
+        List<Long> itemIds = items.stream().map(Item::getId).collect(Collectors.toList());
+
+        Map<Long, List<Booking>> bookingsByItemId = bookingRepository.findAll()
+                .stream()
+                .filter(booking -> itemIds.contains(booking.getItem().getId()))
+                .collect(Collectors.groupingBy(booking -> booking.getItem().getId()));
+
+        Map<Long, List<Comment>> commentsByItemId = commentRepository.findAll()
+                .stream()
+                .filter(comment -> itemIds.contains(comment.getItem().getId()))
+                .collect(Collectors.groupingBy(comment -> comment.getItem().getId()));
+
         List<ItemBookingDto> result = new ArrayList<>();
 
         for (Item item : items) {
             Long itemId = item.getId();
             ItemBookingDto itemBookingDto = mapper.toItemDtoWithBooking(item);
 
+            List<Booking> itemBookings = bookingsByItemId.getOrDefault(itemId, Collections.emptyList());
             BookingDtoForBookingItems lastBooking = findLastBooking(itemId, now);
             BookingDtoForBookingItems nextBooking = findNextBooking(itemId, now);
 
             itemBookingDto.setLastBooking(lastBooking);
             itemBookingDto.setNextBooking(nextBooking);
 
-            List<CommentDto> comments = commentMapper.toDtoList(commentRepository.findAllByItem_Id(itemId));
-            for (CommentDto comment : comments) {
-                comment.setAuthorName(comment.getAuthor().getName());
-            }
-
-            if (comments.isEmpty()) {
-                itemBookingDto.setComments(new ArrayList<>());
-            } else {
-                itemBookingDto.setComments(comments);
-            }
+            List<CommentDto> comments = commentsByItemId.getOrDefault(itemId, new ArrayList<>())
+                    .stream()
+                    .map(commentMapper::toDto)
+                    .collect(Collectors.toList());
+            comments.forEach(comment -> comment.setAuthorName(comment.getAuthor().getName()));
+            itemBookingDto.setComments(comments.isEmpty() ? new ArrayList<>() : comments);
 
             result.add(itemBookingDto);
         }
 
         return result;
     }
-
 
     @Override
     public List<ItemDto> search(String text) {
