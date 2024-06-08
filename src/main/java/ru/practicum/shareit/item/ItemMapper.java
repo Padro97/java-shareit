@@ -1,9 +1,27 @@
 package ru.practicum.shareit.item;
 
 import org.mapstruct.Mapper;
-import ru.practicum.shareit.user.UserMapper;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
+import ru.practicum.shareit.item.dto.ItemBookingDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+@Component("itemMapper")
 public interface ItemMapper {
-    ItemDto item2Dto(Item item);
+    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
+
+    ItemDto toDto(Item item);
+
+    Item toItem(ItemDto item);
+
+    List<ItemDto> itemsToItemDto(List<Item> items);
+
+    List<ItemBookingDto> itemsToItemsDtoWithBooking(List<Item> items);
+
+    ItemBookingDto toItemDtoWithBooking(Item item);
+
+    Item toItemFromDtoWithBookings(ItemBookingDto item);
 }
