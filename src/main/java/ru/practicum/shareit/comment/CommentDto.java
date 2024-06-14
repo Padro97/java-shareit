@@ -28,8 +28,4 @@ public class CommentDto {
     private LocalDateTime created;
 
     private String authorName;
-
-    public Long getItemId() {
-        return item.getId();
-    }
 }

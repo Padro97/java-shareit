@@ -1,12 +1,16 @@
 package ru.practicum.shareit.booking;
 
 import lombok.*;
+import ru.practicum.shareit.booking.dto.BookingStatus;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * TODO Sprint add-bookings.
+ */
 @Getter
 @Setter
 @Builder
@@ -35,8 +39,4 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-
-    public Long getItemId() {
-        return item.getId();
-    }
 }

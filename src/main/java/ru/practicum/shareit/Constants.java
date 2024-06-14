@@ -14,5 +14,8 @@ public class Constants {
     public static final String BOOKINGS_PATH = "/bookings";
     public static final String BOOKING_ID_PATH = "/{bookingId}";
     public static final String OWNER = "/owner";
-
+    //Request
+    public static final String REQUEST_PATH = "/requests";
+    public static final String ALL = "/all";
+    public static final String BY_ID = "/{requestId}";
 }

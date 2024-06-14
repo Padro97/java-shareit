@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.*;
-import ru.practicum.shareit.request.ItemRequestDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
@@ -29,5 +28,5 @@ public class ItemDto {
     @NotNull(message = "Предмет не может иметь статус доступа со значением null")
     private Boolean available;
 
-    private ItemRequestDto request;
+    private Long requestId;
 }
