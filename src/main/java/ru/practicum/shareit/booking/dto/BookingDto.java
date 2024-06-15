@@ -4,7 +4,6 @@ import lombok.*;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
 @ToString
