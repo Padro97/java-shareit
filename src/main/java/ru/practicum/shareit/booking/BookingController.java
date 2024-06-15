@@ -42,7 +42,7 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<List<BookingDtoForAnswer>> getByUser(@RequestParam(defaultValue = "0") Long from,
                                                                @RequestParam(defaultValue = "100") Long size,
-                                                               @RequestParam(required = false, defaultValue = "ALL") String state,
+                                                               @RequestParam(defaultValue = "ALL") String state,
                                                                @RequestHeader("X-Sharer-User-Id") Long userId) {
         return ResponseEntity.ok(service.getByUser(from, size, state, userId));
     }
@@ -50,7 +50,7 @@ public class BookingController {
     @GetMapping(Constants.OWNER)
     public ResponseEntity<List<BookingDtoForAnswer>> getByOwner(@RequestParam(defaultValue = "0") Long from,
                                                                 @RequestParam(defaultValue = "100") Long size,
-                                                                @RequestParam(required = false, defaultValue = "ALL") String state,
+                                                                @RequestParam(defaultValue = "ALL") String state,
                                                                 @RequestHeader("X-Sharer-User-Id") Long userId) {
         return ResponseEntity.ok(service.getByOwner(from, size, state, userId));
     }

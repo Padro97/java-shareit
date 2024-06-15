@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @ToString
 @Getter
 @Setter
@@ -30,6 +27,5 @@ public class BookingDto {
 
     private UserDto booker;
 
-    @Null
     private BookingStatus status;
 }
