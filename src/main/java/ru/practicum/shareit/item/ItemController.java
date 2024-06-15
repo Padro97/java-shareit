@@ -9,7 +9,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoForUpdate;
 import ru.practicum.shareit.item.dto.ItemBookingDto;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.Constants;
+import ru.practicum.shareit.item.utils.ItemApiPathConstants;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -19,7 +19,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.ITEMS_PATH)
+@RequestMapping(ItemApiPathConstants.ITEMS_PATH)
 public class ItemController {
     private final ItemService service;
 
@@ -28,28 +28,32 @@ public class ItemController {
         return ResponseEntity.status(201).body(service.add(item, ownerId));
     }
 
-    @PatchMapping(Constants.ITEM_ID_PATH)
+    @PatchMapping(ItemApiPathConstants.ITEM_ID_PATH)
     public ResponseEntity<ItemDto> update(@RequestBody ItemDtoForUpdate item, @RequestHeader("X-Sharer-User-Id") Long ownerId, @Positive @PathVariable Long itemId) throws AccessDeniedException {
         item.setId(itemId);
         return ResponseEntity.ok(service.update(item, ownerId));
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemBookingDto>> getAllBy(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        return ResponseEntity.ok(service.getAllByOwner(ownerId));
+    public ResponseEntity<List<ItemBookingDto>> getAllBy(@RequestParam(defaultValue = "0") Long from,
+                                                         @RequestParam(defaultValue = "100") Long size,
+                                                         @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+        return ResponseEntity.ok(service.getAllByOwner(ownerId, from, size));
     }
 
-    @GetMapping(Constants.ITEM_ID_PATH)
+    @GetMapping(ItemApiPathConstants.ITEM_ID_PATH)
     public ResponseEntity<ItemBookingDto> getById(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) {
         return ResponseEntity.ok(service.getById(itemId, userId));
     }
 
-    @GetMapping(Constants.SEARCH_ITEMS_PATH)
-    public ResponseEntity<List<ItemDto>> search(@RequestParam String text) {
-        return ResponseEntity.ok(service.search(text));
+    @GetMapping(ItemApiPathConstants.SEARCH_ITEMS_PATH)
+    public ResponseEntity<List<ItemDto>> search(@RequestParam(defaultValue = "0") Long from,
+                                                @RequestParam(defaultValue = "100") Long size,
+                                                @RequestParam String text) {
+        return ResponseEntity.ok(service.search(text, from, size));
     }
 
-    @PostMapping(Constants.COMMENTS)
+    @PostMapping(ItemApiPathConstants.COMMENTS)
     public ResponseEntity<CommentDto> addComment(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId, @Valid @RequestBody CommentDto comment) {
         return ResponseEntity.ok(service.addComment(itemId, userId, comment));
     }

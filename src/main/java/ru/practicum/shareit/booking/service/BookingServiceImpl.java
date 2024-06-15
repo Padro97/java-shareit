@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -8,7 +10,7 @@ import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoForAnswer;
 import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.booking.dto.BookingStatus;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.service.ItemService;
@@ -113,29 +115,34 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDtoForAnswer> getByUser(String state, Long userId) {
+    public List<BookingDtoForAnswer> getByUser(Long from, Long size, String state, Long userId) {
+        if (from < 0 || size < 0) {
+            throw new ValidationException("Параметры пагинации не могут быть отрицательными.");
+        }
+        int page = (int) (from / size);
+        Pageable pageable = PageRequest.of(page, size.intValue());
         userService.getById(userId);
         List<Booking> result = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         try {
             switch (BookingState.valueOf(state)) {
                 case ALL:
-                    result = repository.findAllByBooker_IdOrderByStartDesc(userId);
+                    result = repository.findAllByBooker_IdOrderByStartDesc(userId, pageable).getContent();
                     break;
                 case CURRENT:
-                    result = repository.findAllByBooker_IdAndStartIsBeforeAndEndIsAfter(userId, now, now);
+                    result = repository.findAllByBooker_IdAndStartIsBeforeAndEndIsAfter(userId, now, now, pageable).getContent();
                     break;
                 case PAST:
-                    result = repository.findAllByBooker_IdAndEndIsBeforeOrderByStartDesc(userId, now);
+                    result = repository.findAllByBooker_IdAndEndIsBeforeOrderByStartDesc(userId, now, pageable).getContent();
                     break;
                 case FUTURE:
-                    result = repository.findAllByBooker_IdAndStartIsAfterOrderByStartDesc(userId, now);
+                    result = repository.findAllByBooker_IdAndStartIsAfterOrderByStartDesc(userId, now, pageable).getContent();
                     break;
                 case WAITING:
-                    result = repository.findAllByBooker_IdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING);
+                    result = repository.findAllByBooker_IdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING, pageable).getContent();
                     break;
                 case REJECTED:
-                    result = repository.findAllByBooker_IdAndStatusOrderByStartDesc(userId, BookingStatus.REJECTED);
+                    result = repository.findAllByBooker_IdAndStatusOrderByStartDesc(userId, BookingStatus.REJECTED, pageable).getContent();
                     break;
             }
         } catch (IllegalArgumentException e) {
@@ -147,29 +154,34 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDtoForAnswer> getByOwner(String state, Long ownerId) {
+    public List<BookingDtoForAnswer> getByOwner(Long from, Long size, String state, Long ownerId) {
+        if (from < 0 || size < 0) {
+            throw new ValidationException("Параметры пагинации не могут быть отрицательными.");
+        }
+        int page = (int) (from / size);
+        Pageable pageable = PageRequest.of(page, size.intValue());
         userService.getById(ownerId);
         List<Booking> result = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         try {
             switch (BookingState.valueOf(state)) {
                 case ALL:
-                    result = repository.findAllByItem_Owner_IdOrderByStartDesc(ownerId);
+                    result = repository.findAllByItem_Owner_IdOrderByStartDesc(ownerId, pageable).getContent();
                     break;
                 case CURRENT:
-                    result = repository.findAllByItem_Owner_IdAndStartIsBeforeAndEndIsAfter(ownerId, now, now);
+                    result = repository.findAllByItem_Owner_IdAndStartIsBeforeAndEndIsAfter(ownerId, now, now, pageable).getContent();
                     break;
                 case PAST:
-                    result = repository.findAllByItem_Owner_IdAndEndIsBeforeOrderByStartDesc(ownerId, now);
+                    result = repository.findAllByItem_Owner_IdAndEndIsBeforeOrderByStartDesc(ownerId, now, pageable).getContent();
                     break;
                 case FUTURE:
-                    result = repository.findAllByItem_Owner_IdAndStartIsAfterOrderByStartDesc(ownerId, now);
+                    result = repository.findAllByItem_Owner_IdAndStartIsAfterOrderByStartDesc(ownerId, now, pageable).getContent();
                     break;
                 case WAITING:
-                    result = repository.findAllByItem_Owner_IdAndStatusOrderByStartDesc(ownerId, BookingStatus.WAITING);
+                    result = repository.findAllByItem_Owner_IdAndStatusOrderByStartDesc(ownerId, BookingStatus.WAITING, pageable).getContent();
                     break;
                 case REJECTED:
-                    result = repository.findAllByItem_Owner_IdAndStatusOrderByStartDesc(ownerId, BookingStatus.REJECTED);
+                    result = repository.findAllByItem_Owner_IdAndStatusOrderByStartDesc(ownerId, BookingStatus.REJECTED, pageable).getContent();
                     break;
             }
         } catch (IllegalArgumentException e) {

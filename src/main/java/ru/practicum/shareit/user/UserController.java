@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.Constants;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserDtoForUpdate;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.Constants;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

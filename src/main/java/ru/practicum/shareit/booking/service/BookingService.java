@@ -13,7 +13,7 @@ public interface BookingService {
 
     BookingDtoForAnswer getById(Long id, Long userId) throws AccessDeniedException;
 
-    List<BookingDtoForAnswer> getByUser(String state, Long userId);
+    List<BookingDtoForAnswer> getByUser(Long from, Long size, String state, Long userId);
 
-    List<BookingDtoForAnswer> getByOwner(String state, Long userId);
+    List<BookingDtoForAnswer> getByOwner(Long from, Long size, String state, Long userId);
 }
