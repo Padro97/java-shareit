@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.ValidationException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 
