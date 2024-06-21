@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -13,6 +14,7 @@
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
+
 	<name>ShareIt</name>
 	<modules>
 		<module>gateway</module>
@@ -21,9 +23,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-		<org.projectlombok.version>1.18.30</org.projectlombok.version>
-		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 	</properties>
 
 	<dependencies>
@@ -31,11 +30,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>${org.mapstruct.version}</version>
+			<version>1.5.5.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -54,7 +55,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${org.projectlombok.version}</version>
+			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -116,17 +117,17 @@
 							<path>
 								<groupId>org.mapstruct</groupId>
 								<artifactId>mapstruct-processor</artifactId>
-								<version>${org.mapstruct.version}</version>
+								<version>1.5.5.Final</version>
 							</path>
 							<path>
 								<groupId>org.projectlombok</groupId>
 								<artifactId>lombok</artifactId>
-								<version>${org.projectlombok.version}</version>
+								<version>1.18.30</version>
 							</path>
 							<path>
 								<groupId>org.projectlombok</groupId>
 								<artifactId>lombok-mapstruct-binding</artifactId>
-								<version>${lombok-mapstruct-binding.version}</version>
+								<version>0.2.0</version>
 							</path>
 						</annotationProcessorPaths>
 					</configuration>
@@ -223,6 +224,7 @@
 											</limit>
 											<limit>
 												<counter>COMPLEXITY</counter>
+												<value>COVEREDRATIO</value>
 												<minimum>0.6</minimum>
 											</limit>
 											<limit>
@@ -249,25 +251,9 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.3.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.12.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.liquibase</groupId>
-					<artifactId>liquibase-maven-plugin</artifactId>
-					<version>4.9.1</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>check</id>
@@ -304,4 +290,5 @@
 			</build>
 		</profile>
 	</profiles>
+
 </project>
