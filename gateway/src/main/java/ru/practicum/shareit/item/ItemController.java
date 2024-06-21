@@ -14,6 +14,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Collections;
 
 @Controller
 @RequestMapping(PathConstants.ITEMS)
@@ -58,6 +59,10 @@ public class ItemController {
                                          @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                          @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Checks.pageParams(from, size);
+        if (text == null || text.trim().isEmpty()) {
+            log.info("Пустой запрос на поиск предмета");
+            return ResponseEntity.ok(Collections.emptyList());
+        }
         log.info("Запрос на поиск предмета по названию или описанию");
         return itemClient.search(userId, text, from, size);
     }
