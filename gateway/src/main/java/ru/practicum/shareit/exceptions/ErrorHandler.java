@@ -14,21 +14,21 @@ import java.util.Map;
 public class ErrorHandler {
     private static final Logger log = LoggerFactory.getLogger(ErrorHandler.class);
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class, IllegalArgumentException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse validateException(final RuntimeException e) {
         log.error("Validation error: {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleIllegalArgument(final IllegalArgumentException e) {
         log.error("Illegal argument: {}", e.getMessage(), e);
         return Map.of("error", e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({IllegalStateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleIllegalState(final IllegalStateException e) {
         log.error("Illegal state: {}", e.getMessage(), e);
