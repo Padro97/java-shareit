@@ -17,12 +17,7 @@ import java.util.NoSuchElementException;
 public class ErrorHandler {
     private static final Logger log = LoggerFactory.getLogger(ErrorHandler.class);
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        log.error("Validation error: {}", e.getMessage(), e);
-        return Map.of("Ошибка валидации", e.getMessage());
-    }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -43,19 +38,5 @@ public class ErrorHandler {
     public Map<String, String> handleEntityNotFound(final EntityNotFoundException e) {
         log.error("Entity not found: {}", e.getMessage(), e);
         return Map.of("Ошибка поиска элемента", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleIllegalArgument(final IllegalArgumentException e) {
-        log.error("Illegal argument: {}", e.getMessage(), e);
-        return Map.of("error", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleIllegalState(final IllegalStateException e) {
-        log.error("Illegal state: {}", e.getMessage(), e);
-        return Map.of("error", e.getMessage());
     }
 }
