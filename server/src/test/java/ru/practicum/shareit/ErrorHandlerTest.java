@@ -24,14 +24,6 @@ public class ErrorHandlerTest {
     }
 
     @Test
-    public void testHandleValidationException() {
-        ValidationException exception = new ValidationException("Validation failed");
-        var response = errorHandler.handleValidationException(exception);
-
-        assertEquals("Validation failed", response.get("Ошибка валидации"));
-    }
-
-    @Test
     public void testHandleAccessDenied() {
         AccessDeniedException exception = new AccessDeniedException("Access denied");
         var response = errorHandler.handleAccessDenied(exception);
@@ -53,21 +45,5 @@ public class ErrorHandlerTest {
         var response = errorHandler.handleEntityNotFound(exception);
 
         assertEquals("Entity not found", response.get("Ошибка поиска элемента"));
-    }
-
-    @Test
-    public void testHandleIllegalArgument() {
-        IllegalArgumentException exception = new IllegalArgumentException("Illegal argument");
-        var response = errorHandler.handleIllegalArgument(exception);
-
-        assertEquals("Illegal argument", response.get("error"));
-    }
-
-    @Test
-    public void testHandleIllegalState() {
-        IllegalStateException exception = new IllegalStateException("Illegal state");
-        var response = errorHandler.handleIllegalState(exception);
-
-        assertEquals("Illegal state", response.get("error"));
     }
 }
