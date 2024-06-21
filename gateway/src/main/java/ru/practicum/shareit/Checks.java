@@ -1,9 +1,11 @@
 package ru.practicum.shareit;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.exceptions.ValidationException;
 
 import java.time.LocalDateTime;
 
+@UtilityClass
 public class Checks {
     public static void pageParams(int from, int size) {
         if (from < 0 || size < 0) {
